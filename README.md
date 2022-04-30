@@ -99,7 +99,7 @@ Il existe 92 classes au total . minimum = 1 , maximum = 26
 Toutes les classes ou presque sont-elles dans le même paquetage ? : Non est-ce que des paquetages non feuilles contiennent des classes ? : Oui
 Il y a un couplage fort entre le paquetage com.google.gson et les paquetages com.google.gson.internal,com.google.gson.internal.bind.Paquetage com.google.gson est cohésif parce qu’on remarque que dans la classe com.google.gson.GsonBuilder on utilise plusieurs attributs de la classecom.google.gson.Gson.
 
-3.4 Organisations des classes 
+## 3.4 Organisations des classes 
 
 La hiérarchie des classes est plutôt plate. D’après les résultats de codemr, il y a 69 classes dont leur arbre d’héritage n’est pas profond (DIT) , et 62 classes qui n’ont pas beaucoup de fils (NOC).
 
@@ -115,17 +115,17 @@ D’après les résultats du calcul des métriques sur le paquetage com.google.g
 Nombre de tests : 1062 méthodes de tests ,102 classes de tests avec une couverture de tests de 84.7% de code couvert par les tests. Cette métrique nous indique que le code est généralement bien testé, cependant on peut rajouter plus de tests pour avoir une couverture optimale qui se rapproche du 100%. C’est ce qu’on va essayer de mettre en œuvre dans la deuxième partie du projet.
 On retrouve des tests unitaires avec des assertions, ainsi que des tests fonctionnels. Pour les tests unitaire une modification sur le code est à prévoir pour changer les fonctions assert ( car détection de code smells sur cette méthode ). Par ailleurs, sur la totalité des tests, deux tests seulement échouent sont testMakeAccessibleWithUnsafe et testDateFormatString ( tests a revoir pour la seconde partie) ce qui donne un pourcentage de succès sur les tests de 98.1%. 
 
-4.2 Commentaires 
+## 4.2 Commentaires 
 
 Nombre de lignes de commentaires : 3141 soit 27.8% de la totalité des lignes de code ( ligne totale 14940 ). 
 On retrouve sur l’ensemble du projet tout type de commentaire : javadoc, licence, code commenté et commentaire pertinent. En moyenne la javadoc couvre 15,76% des classes et 49,85% des méthodes avec un total de 2216 JLOC. On retrouve aussi des classes commentées mais on a nullement une indication pourquoi ces dernières sont sous commentaires. Pour finir 3645 de code non commenté.
 
-4.3 Dépréciation 
+## 4.3 Dépréciation 
 
 Bout de code déprécié : dans la classe JsonElement.java la méthode getAsCharactere() est utilisée alors que cette méthode est dépréciée. Cette méthode est utilisée dans deux classes : JsonArray et JsonPrimitive. JsonArrayest utilisée dans le projet 104 fois et JsonPrimitive est utilisée dans le projet 280 fois. D’après l’IDE, le nom de cette méthode est trompeur, car elle ne prend pas l’élément qui l'appelle comme un caractère mais plutôt comme le premier élément de la chaîne du caractère.
 
 
-4.4 Duplication de code
+## 4.4 Duplication de code
 
  Dans ce projet, il y a :
     • 1000 lignes de code dupliquées  ,
@@ -134,7 +134,7 @@ Bout de code déprécié : dans la classe JsonElement.java la méthode getAsChar
     • avec une densité de duplication de 2,4%.
       Par ailleurs, nous tenons à signaler que ces duplications proviennent de certaines variables qui sont répétées plusieurs fois, des blocs de code sont dupliqués sur dans LinkedTreeMap et LinkedHashTreeMap.Ces duplications peuvent être supprimées en appliquant les techniques de refactoring pour éliminer les bouts de codes redondants, et initialiser des variables pour éviter de les affecter à plusieurs reprises dans le code notamment dans les classes tests.
 
-4.5 God Classe 
+## 4.5 God Classe 
 
 Nombre de méthodes par classes : min = 0 ,max = 53.
 Nombre de variables d'instances : Totale de 3916, min = 0, max = 344.
@@ -151,7 +151,7 @@ Pour réduire la complexité cyclomatique  et respecter le principe de responsab
  Celà permettra de mettre en place des test unitaires à chaque classe et faciliter la maintenance du code.
 
 
-4.6 Analyses des méthodes 
+## 4.6 Analyses des méthodes 
 
 Complexité cyclomatique : min = 1 , max = 40 , avg = 2,82, médian = 10
 La méthode avec la plus grande complexité cyclomatique est JsonReader.doPeak() , en effet cette méthode a 113 lignes de code et 6 lignes de commentaires. On peut en déduire que pour une grosse méthode comme ça, le nombre de commentaires doit être supérieur pour bien détailler le fonctionnement de cette dernière.
@@ -163,8 +163,8 @@ On retrouve dans le projet une méthode dans la classe ReflectiveTypeAdapterFact
 Pour les méthodes qui retournent un code d'erreur, on en retrouve dans le projet et elles sont identifiables grâce au mots clés throw new Exception ou bien avec @Exception.
 
 
-5 Nettoyage de code et code smells 
-5.1 Règle de nommage 
+# 5 Nettoyage de code et code smells 
+## 5.1 Règle de nommage 
 
 Plusieurs  variables du même nom. A tire d’exemple  on a une variable : factories qui est déclarée deux fois. Une mauvaise utilisation d’une variable pourrait causer un bugs susceptibles de se propager dans le reste du programme. 
 Pour question de maintenance et de lissibilités , il est nécessaire de modifier le nom d’une des deux pour que les développeurs puissent se repérer si on modifie un bout du code après.
@@ -175,29 +175,30 @@ Le langage ayant évolué depuis la mise en œuvre de cette API, faire une modif
 
 
 
-5.2 Nombre magique
+ # 5.2 Nombre magique
 
 Pas de nombre magique dans le projet. ( analyse de sonarqube et sonarlint ne donne pas de code smells pour les nombres magiques ).
  		 		
 
-5.3 Structure du code 
+# 5.3 Structure du code 
  
 On a choisi 3 classes dans tous le package stream puis deux dans com/google/gson  et 3 dans les test :,
 
 Parmi cette analyse des classes, on remarque que la structuration du code est mal faite, on retrouve des déclarations de variables d’instance un peu partout dans la classe , un chevauchement des private et publique méthode qui ne respectent pas l’ordre ( public après private ) et aussi la déclaration de classe au sein d’une classe. De plus, sur tout le projet, sonarqube indique l'existence de 12 bugs, parmi les bugs, on retrouve l'appel de certaines méthodes de la classe java.Objet, comme equals sans ajouter le mot clé @Override; ça peut porter confusion à d’autres développeurs, et la solution est soit ajouter Override ou bien renommer carrément les méthodes.
 Il y’a aussi les test mal conçu ou des méthodes non couvertes. Dans la suite de notre projet on mettre en place des test, corriger ces erreurs de conception.
  
-5.4 Code mort
+# 5.4 Code mort
 
 Le projet Gson est une API, et  c’est normal qu’il existe du code qui ne soit pas appelé en interne.
   On pourrait penser à une suppression de ces code morts mais cela serait une mauvaise pratique  car cette API pourrait être utilisé à d’autres fin  par d’autres développeurs qui éventuellement vont utiliser le code qui n’est pas appelé en interne.
 La seule option possible est de mettre à jour ce code en faisant les bons import  et une  adapter la syntaxes afin d’êviter les erreurs syntaxiques signalés dans  Sonarqube.
-PARTIE 2
+# PARTIE 2
 Dans cette partie, nous avons préférés noux concentrés sur l’origine des bugs  puis de les résoudres et au mieux, proposer des solutions pour que les utilisateurs de cette API ne l’utilisent pas avec les bugs.  Ensuite nous  nous concentrons sur une classe pour couvrir les test non effectuer afin d’améliorer la complexité cyclomatique . 
 Le travail a donc été fait en deux parties . Une partie en individuel et l’autre en groupe.  Les traces de nos travaux sont donc sur le git.
 	6 Amélioration
-Partie individuelle
-(AGBA Pascal Sébastien)
+## Partie individuelle
+* (AGBA Pascal Sébastien)
+
  **« Dans la classe JsonArray, noud avons la méthode getAsCharacter() qui est identifié comme  code déprécié et que cette dernière . Pour améliorer éviter que cela ne laisse entendre que la qualité du logiciel est moindre, je l’ai donc mis en commentaire. Cet code devrait etre définivement définitivement mais j’ l’ai laissé pour des raisons de traces de travail effectué. Dans  classe $Gson$Types , la méthode static boolean equal (Object a Object b) est sujet de confusion et  entraine un Bug supplémentaire dans l’API. Cette méthode devrait avoir l’annotation @Override ou porter le qualificatif public. C’est ce qui a été fait et le Bug n’y est plus. Toutes les classes ayant besoin besoin de l’annotation @Override  ont été renomées ainsi et cela fait passe les Bugs de 12 à 8.**
  **Sonarqube signale aussi le mauvais nommage des attributs car ces derniers ne diffèrent de la classe dans laquelle ils sont, que par la première lettre (Majuscule ou minuscule).  Renommer ces attributs revient à rédefenir la classe Builder . Ce qui serait fastidieux. Chaque developpeur souhaitant utiliser l’API devra donc faire un héritage et ensuite renommer 	avec des attributs respectant la dernières syntaxe de Java.»**
 
